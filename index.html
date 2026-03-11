@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw 龙虾管家 | 一键部署助手</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #f0f2f5; color: #333; line-height: 1.6; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h1 { color: #007AFF; font-size: 24px; margin-bottom: 10px; }
+        .video-box { width: 100%; border-radius: 12px; background: #000; margin: 20px 0; aspect-ratio: 9 / 16; overflow: hidden; }
+        .btn-install { background: #007AFF; color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin: 10px 0; }
+        .key-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .btn-key { flex: 1; min-width: 120px; padding: 10px; border-radius: 8px; text-decoration: none; color: white; font-size: 14px; text-align: center; }
+        .gpt { background: #10a37f; } /* OpenAI 绿 */
+        .qwen { background: #6338e2; } /* 千问 紫 */
+        .doubao { background: #2f54eb; } /* 豆包 蓝 */
+        .feishu { background: #3370ff; } /* 飞书 蓝 */
+        .code-display { background: #f8f9fa; padding: 10px; font-size: 12px; border: 1px dashed #ccc; margin: 10px 0; word-break: break-all; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🦞 OpenClaw 部署助手</h1>
+    <p>30 秒极速安装，让你的机器人动起来</p>
+
+    <div class="video-box">
+        <video width="100%" height="100%" controls poster="封面图链接">
+            <source src="demo.mp4" type="video/mp4">
+            您的浏览器不支持视频播放。
+        </video>
+    </div>
+
+    <button class="btn-install" onclick="copyInstallCode()">点我复制安装代码</button>
+    <div class="code-display" id="install-code">/bin/bash -c "$(curl -fsSL https://get.docker.com | sh && docker run -d --name openclaw -p 18789:18789 -e LANG=zh_CN.UTF-8 --restart always openclaw/openclaw-ce:latest)"</div>
+
+    <h3 style="margin-top:30px;">🔑 第二步：申请大模型 Key</h3>
+    <div class="key-group">
+        <a href="https://platform.openai.com/api-keys" target="_blank" class="btn-key gpt">申请 GPT Key</a>
+        <a href="https://dashscope.console.aliyun.com/apiKey" target="_blank" class="btn-key qwen">申请通义千问 Key</a>
+        <a href="https://www.volcengine.com/product/ark" target="_blank" class="btn-key doubao">申请豆包 Key</a>
+        <a href="https://open.feishu.cn/app" target="_blank" class="btn-key feishu">配置飞书机器人</a>
+    </div>
+
+    <p style="font-size: 12px; color: #999; margin-top: 20px;">提示：安装完成后，请访问 http://服务器IP:18789</p>
+</div>
+
+<script>
+    function copyInstallCode() {
+        var code = document.getElementById('install-code').innerText;
+        navigator.clipboard.writeText(code);
+        alert('代码已成功复制！请前往 Termius 粘贴。');
+    }
+</script>
+
+</body>
+</html>
