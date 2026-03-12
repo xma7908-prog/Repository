@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>龙虾管家 (OpenClaw) 全平台一键部署终极百科全书</title>
+    <style>
+        :root { --primary: #007bff; --success: #28a745; --danger: #dc3545; --dark: #1a1a1a; }
+        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.8; color: #333; max-width: 1000px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        .card { background: white; padding: 35px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #eef1f5; }
+        .header { text-align: center; padding: 80px 20px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; border-radius: 25px; margin-bottom: 40px; }
+        h2 { color: var(--dark); border-left: 8px solid var(--primary); padding-left: 15px; margin: 35px 0 20px; font-size: 1.8rem; }
+        h3 { color: var(--danger); margin-top: 25px; font-size: 1.3rem; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 8px; font-size: 13px; font-weight: bold; margin-right: 10px; color: white; vertical-align: middle; }
+        .bg-win { background: #0078d7; } .bg-mac { background: #555; } .bg-linux { background: #f07133; }
+        /* 核心高亮框 */
+        .core-command { background: #1e1e1e; color: #00ff00; padding: 25px; border-radius: 12px; font-family: 'Consolas', monospace; margin: 20px 0; overflow-x: auto; border: 2px solid #007bff; font-size: 1.1rem; line-height: 1.6; box-shadow: 0 5px 15px rgba(0,123,255,0.2); }
+        .important-box { background: #fff5f5; border: 1px solid #feb2b2; padding: 20px; border-radius: 12px; margin: 20px 0; font-weight: bold; }
+        .step-num { display: inline-block; width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; text-align: center; line-height: 30px; margin-right: 10px; font-size: 16px; font-weight: bold; }
+        .media-box { margin: 25px 0; border-radius: 15px; overflow: hidden; border: 2px solid #eee; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .guide-img { width: 100%; display: block; }
+        .pay-area { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 30px; }
+        .qr-card { text-align: center; width: 240px; padding: 20px; border: 2px solid #f1f1f1; border-radius: 20px; background: #fff; transition: 0.3s; }
+        .qr-card:hover { transform: translateY(-10px); border-color: var(--danger); }
+        .qr-card img { width: 100%; border-radius: 15px; margin-bottom: 15px; }
+        .faq-box { background: #f8fafc; padding: 25px; border-radius: 15px; border: 1px solid #e2e8f0; }
+        .faq-q { font-weight: bold; color: var(--primary); display: block; margin-bottom: 8px; font-size: 1.1rem; }
+        .faq-a { font-size: 1rem; color: #4a5568; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🦞 龙虾管家 (OpenClaw) 终极部署百科全书</h1>
+    <p>专治下不动/装不上/打不开 | 包含硬件自查、加速补丁、接口秘籍</p>
+    <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 15px;">V11.0 终极全闭环版 —— 你的 24h 自动化变现基地</p>
+</div>
+
+<div class="card">
+    <h2 style="color:var(--danger)"><span class="step-num">1</span> 避坑：哪些电脑【绝对不能】装？</h2>
+    <div class="important-box">
+        <ul style="margin:0; padding-left:20px;">
+            <li><b>内存不足 8GB：</b>Docker 运行后系统会极度卡顿甚至死机（推荐 16GB）。</li>
+            <li><b>32 位操作系统：</b>只支持 64 位系统，且不支持 Win7 及以下版本。</li>
+            <li><b>虚拟化未开启：</b>CMD 输入 <code>systeminfo | findstr "Virtualization"</code>，必须显示“是”。</li>
+            <li><b>虚拟机嵌套：</b>严禁在虚拟机里再装 Docker，99.9% 会报错安装失败。</li>
+        </ul>
+        <p style="margin-top:10px; font-size:0.9rem;">* 若硬件不达标，请直接选用【方案 C】云服务器版，省心省力。</p>
+    </div>
+</div>
+
+<div class="card">
+    <h2><span class="step-num">2</span> 核心：Docker 软件下载与环境修复</h2>
+    <p><b>1. 软件极速下载：</b></p>
+    <ul>
+        <li><b>Windows：</b><a href="https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe">官方直连下载</a>（如慢，请扫码找作者获取<b>国内网盘分流</b>）。</li>
+        <li><b>Mac：</b><a href="https://desktop.docker.com/mac/main/arm64/Docker.dmg">M1/M2/M3版</a> | <a href="https://desktop.docker.com/mac/main/amd64/Docker.dmg">Intel版</a>。</li>
+    </ul>
+    <p><b>2. 环境报错修复：</b></p>
+    <p>💡 安装后弹出 "WSL 2 kernel update"？请点击弹窗内的链接下载 Linux 内核补丁，安装后重启即可。如果提示 VT 禁用，请进 BIOS 开启虚拟化。</p>
+</div>
+
+<div class="card" style="border: 2px solid var(--danger);">
+    <h2 style="color: var(--danger);"><span class="step-num">3</span> 核心补丁：解决运行代码一直 Loading</h2>
+    <p><b>这是解决你今天卡两小时不动的唯一解药！</b></p>
+    <p>打开 Docker Desktop -> Settings -> Docker Engine，在右侧 JSON 代码框加入：</p>
+    <div class="core-command" style="color:#d4d4d4; font-size: 0.95rem;">
+<pre>{
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://huecker.io",
+    "https://dockerhub.timeweb.cloud"
+  ]
+}</pre>
+    </div>
+    <p>✅ 点击 <b>Apply & Restart</b>。不配这个，拉取 OpenClaw 镜像会永远超时。</p>
+</div>
+
+<div class="card">
+    <h2><span class="step-num">4</span> 核心：一键安装 OpenClaw (核心指令)</h2>
+    
+    <div class="badge bg-win">方案 A：WINDOWS / Mac</div>
+    <p>确保 Docker 绿色运行后，打开 CMD 或 终端粘贴回车：</p>
+    <div class="core-command">
+        <code>docker run -d --name openclaw -p 8080:8080 -v openclaw_data:/app/data --restart always openclaw/openclaw:latest</code>
+    </div>
+
+    <div class="badge bg-linux">方案 B：云服务器 (Ubuntu 22.04)</div>
+    <p>登录 SSH 终端后直接粘贴（含 Docker 环境全自动安装）：</p>
+    <div class="core-command">
+        <code>curl -fsSL https://get.docker.com | bash && sudo docker run -d --name openclaw -p 80:8080 -v openclaw_data:/app/data --restart always openclaw/openclaw:latest</code>
+    </div>
+    <div class="important-box">⚠️ <b>云端必看：</b>必须在云后台防火墙开启 <b>80</b> 端口！</div>
+    <p>🚩 <b>访问地址：</b>本地 <code>http://localhost:8080</code> | 云端 <code>http://你的公网IP</code></p>
+</div>
+
+<div class="card">
+    <h2><span class="step-num">5</span> 灵魂：API Key 获取与接口配置</h2>
+    <h3>1. 如何获取 API Key？</h3>
+    <p>官方 Key 难搞？扫码添加作者，获取稳定、免翻墙、极速响应的<b>国内直连 API 中转地址</b>。</p>
+    
+    <h3>2. 接口转发 (Base URL) 怎么填？</h3>
+    <p><b>最核心细节：</b>使用中转 Key 时，务必将接口地址改为：<code>https://中转域名/v1</code>。默认的 api.openai.com 国内无法访问，不改会报错！</p>
+
+    <h3>3. Token 监控与省钱</h3>
+    <p>在面板实时查看消耗。记得在预设指令要求 AI “简洁回答”，可有效节省 30% 以上的费用！</p>
+</div>
+
+<div class="card">
+    <h2>❓ 终极 FAQ (常见报错自查)</h2>
+    <div class="faq-box">
+        <span class="faq-q">Q: 访问 IP 地址打不开？</span>
+        <span class="faq-a">A: 1. 检查 Docker 是否启动。2. 云用户检查防火墙 80 端口是否放行。</span>
+
+        <span class="faq-q">Q: 报错 "Invalid API Key" 或 "Connect Timeout"？</span>
+        <span class="faq-a">A: 1. 检查 Key 是否填错。2. 检查 <b>Base URL</b> 是否填入了可用的中转地址。</span>
+    </div>
+</div>
+
+<div class="card" style="border-top: 10px solid var(--danger); text-align: center;">
+    <h2 style="border:none;">👑 数字化资产：100 个专家指令全集</h2>
+    <p>扫码获取 100+ 极品指令包（自媒体/代写/法律/代码）+ 稳定 API 渠道。</p>
+    <div class="pay-area">
+        <div class="qr-card">
+            <img src="images/pay_19.jpg" alt="19.9">
+            <p><b>☕ 19.9 元：技术赞赏</b><br>领 100+ 指令全集 + 极速补丁</p>
+        </div>
+        <div class="qr-card">
+            <img src="images/wechat.jpg" alt="作者微信">
+            <p><b>🚀 39.9 元：代部署</b><br>远程调通 + 核心变现玩法</p>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 龙虾管家 (OpenClaw) 部署中心 | 让 AI 刷新你的收入上限</p>
+</div>
+
+</body>
+</html>
