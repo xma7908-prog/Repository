@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>龙虾管家 (OpenClaw) 终极部署 | Docker报错解决 | 微信飞书手机接入</title>
+    <meta name="description" content="全网最全OpenClaw部署指南。解决Docker下载慢、WSL报错、镜像超时、API Key配置、个人微信/飞书机器人接入。内含全平台一键指令集。">
+    <meta name="keywords" content="OpenClaw, 龙虾管家, 微信AI机器人, 飞书AI, Docker安装报错, Docker加速, API Key中转, AI变现">
+
+    <style>
+        :root { --primary: #007bff; --success: #28a745; --danger: #dc3545; --dark: #1a1a1a; --bg: #f4f7f6; }
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 15px; background-color: var(--bg); }
+        
+        /* 导航快速锚点 */
+        .nav-quick { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .nav-btn { background: #fff; padding: 8px 15px; border-radius: 8px; font-size: 13px; border: 1px solid #ddd; color: #666; text-decoration: none; }
+
+        .header { text-align: center; padding: 50px 20px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; border-radius: 20px; margin-bottom: 25px; }
+        .card { background: white; padding: 25px; border-radius: 18px; margin-bottom: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); border: 1px solid #eef1f5; }
+        h2 { color: var(--dark); border-left: 6px solid var(--primary); padding-left: 12px; margin: 25px 0 15px; font-size: 1.4rem; display: flex; align-items: center; }
+        h3 { color: var(--primary); font-size: 1.1rem; margin-top: 20px; }
+        .step-num { display: inline-block; width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 50%; text-align: center; line-height: 28px; margin-right: 10px; font-size: 14px; flex-shrink: 0; }
+
+        /* 指令高亮框 */
+        .core-command { background: #1e1e1e; color: #00ff00; padding: 20px; border-radius: 12px; font-family: 'Consolas', monospace; margin: 15px 0; overflow-x: auto; border: 1px solid #333; font-size: 0.9rem; white-space: pre-wrap; word-break: break-all; }
+        
+        .error-solve { background: #fff5f5; border: 1px solid #feb2b2; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        .error-solve b { color: var(--danger); display: block; margin-bottom: 5px; }
+
+        /* 平台标签 */
+        .platform-tag { display: inline-block; padding: 4px 12px; border-radius: 20px; color: white; font-size: 12px; margin-right: 8px; margin-bottom: 10px; }
+        .tag-wechat { background: #07c160; } .tag-lark { background: #3370ff; } .tag-key { background: #ff9800; }
+
+        .pay-area { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 25px; }
+        .qr-card { text-align: center; width: 100%; max-width: 260px; padding: 20px; border: 2px solid #f1f1f1; border-radius: 20px; background: #fff; }
+        .qr-card img { width: 100%; border-radius: 15px; margin-bottom: 15px; }
+        
+        .floating-qr { position: fixed; right: 20px; bottom: 80px; width: 130px; background: white; padding: 12px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); text-align: center; font-size: 11px; border: 2px solid var(--primary); z-index: 1000; }
+        @media (max-width: 768px) { .floating-qr { display: none; } }
+    </style>
+</head>
+<body>
+
+<div class="floating-qr">
+    <img id="page-qr" src="" alt="手机同步" style="width:100%;">
+    <p>手机同步看教程</p>
+</div>
+
+<div class="header">
+    <h1>🦞 龙虾管家 (OpenClaw) 终极部署百科全书</h1>
+    <p>包含环境修复、一键安装、API中转、微信飞书接入</p>
+    <p style="font-size: 0.85rem; margin-top: 10px; opacity: 0.8;">V15.1 终极版 | 彻底解决所有“装不上/不说话”</p>
+</div>
+
+<div class="nav-quick">
+    <a href="#step1" class="nav-btn">1.软件安装报错</a>
+    <a href="#step2" class="nav-btn">2.下载超时解决</a>
+    <a href="#step3" class="nav-btn">3.一键安装指令</a>
+    <a href="#step4" class="nav-btn">4.接入手机微信</a>
+    <a href="#step5" class="nav-btn">5.API/Token/计费</a>
+</div>
+
+<div id="step1" class="card">
+    <h2><span class="step-num">1</span> 软件下载与环境报错解决</h2>
+    <p><b>Docker下载：</b><a href="https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe">Win直连</a> | <a href="https://desktop.docker.com/mac/main/arm64/Docker.dmg">Mac M系列</a> | <a href="https://desktop.docker.com/mac/main/amd64/Docker.dmg">Intel版</a></p>
+    
+    <div class="error-solve">
+        <b>🛑 报错 1：安装后提示 "WSL 2 kernel update"？</b>
+        解法：这是缺少 Linux 内核补丁。点击弹窗里的链接下载并安装（大小约 15MB），重启即可。
+    </div>
+    <div class="error-solve">
+        <b>🛑 报错 2：提示 "Virtualization not enabled"？</b>
+        解法：必须进入电脑 BIOS（通常是开机按 F2/Del），找到 Virtualization Technology 并设为 Enabled。
+    </div>
+</div>
+
+<div id="step2" class="card" style="border: 2px solid var(--danger);">
+    <h2 style="color:var(--danger)"><span class="step-num">2</span> 核心补丁：解决运行指令一直 Loading</h2>
+    <p><b>不配这个，拉取镜像会永远超时！</b>打开 Docker 设置 -> Docker Engine，在 JSON 中加入镜像源：</p>
+    <div class="core-command">
+<pre>{
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://huecker.io"
+  ]
+}</pre>
+    </div>
+    <p>✅ 修改后点 <b>Apply & Restart</b>。这是解决“下载没用”的唯一办法。</p>
+</div>
+
+<div id="step3" class="card">
+    <h2><span class="step-num">3</span> 核心：安装 OpenClaw 指令</h2>
+    <p>在 CMD（Win）或终端（Mac）中粘贴运行：</p>
+    <div class="core-command">
+        <code>docker run -d --name openclaw -p 8080:8080 -v openclaw_data:/app/data --restart always openclaw/openclaw:latest</code>
+    </div>
+    <p>🚩 访问地址：浏览器打开 <code>http://localhost:8080</code></p>
+    <div class="error-solve" style="background:#e6f4ea; border-color:#34a853;">
+        <b>🛑 报错 3：无法连接到服务器/端口占用？</b>
+        解法：如果 8080 被占用，请将指令中的 <code>-p 8080:8080</code> 改为 <code>-p 9090:8080</code>，然后访问 9090 端口。
+    </div>
+</div>
+
+<div id="step4" class="card">
+    <h2><span class="step-num">4</span> 进阶：接入手机飞书/微信</h2>
+    <p>进入 OpenClaw 后台 -> <b>通道设置 (Channels)</b>：</p>
+
+    <span class="platform-tag tag-lark">飞书自建机器人</span>
+    <p>1. 在飞书开放平台创建应用，开启机器人功能。<br>2. 复制 <b>App ID</b> 和 <b>Secret</b> 填入管家后台。<br>3. 复制管家给的 <b>Webhook 地址</b> 填回飞书事件订阅。</p>
+
+    <span class="platform-tag tag-wechat">个人微信接入</span>
+    <p>1. 选择微信通道，扫码授权。<br>2. <b>注意：</b>必须用微信小号！禁止在群里高频刷屏，否则会被暂时限制登录。</p>
+</div>
+
+<div id="step5" class="card">
+    <h2><span class="step-num">5</span> 灵魂：API Key、Base URL 与 Token 计费</h2>
+    
+    <span class="platform-tag tag-key">1. API Key 获取</span>
+    <p>AI 的对话需要消耗 <b>API Key</b>。请扫码添加作者微信获取稳定、支持国内直连的中转 Key。</p>
+
+    <div class="error-solve" style="background:#fff9e6; border-color:#ffe58f;">
+        <b>🛑 为什么填了 Key 还是报错/不回答？</b>
+        <b>死穴解决：</b>使用中转 Key 时，在后台“模型设置”里，必须把默认的 <code>api.openai.com</code> 地址改为中转商地址（如 <code>https://api.chzh.com/v1</code>）。不改地址，国内网络永远无法连接。
+    </div>
+
+    <span class="platform-tag tag-key">2. Token 计费说明</span>
+    <ul>
+        <li><b>消耗概念：</b>AI 按照 Token 计费，1k Token 约等于 700 个汉字。</li>
+        <li><b>查看消耗：</b>在管家后台左侧点击“日志/额度”，可以实时看到每条对话消耗了多少 Token。</li>
+        <li><b>省钱技巧：</b>在 AI 角色预设中加入“请简短回答，不要废话”，能帮你节省 30% 以上的费用。</li>
+    </ul>
+</div>
+
+<div class="card" style="border-top: 10px solid var(--danger); text-align: center;">
+    <h2>👑 数字化变现：100 个专家指令全集</h2>
+    <div class="pay-area">
+        <div class="qr-card">
+            <img src="images/pay_19.jpg" alt="19.9">
+            <p><b>19.9 元：技术赞赏</b><br>领指令全集 + <b>Key购买渠道</b></p>
+        </div>
+        <div class="qr-card">
+            <img src="images/wechat.jpg" alt="加微信">
+            <p><b>39.9 元：代部署</b><br>远程带装 + <b>微信接入全程调通</b></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const currentUrl = encodeURIComponent(window.location.href);
+    document.getElementById('page-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${currentUrl}`;
+</script>
+
+<div class="footer">
+    <p>© 2026 龙虾管家 (OpenClaw) 部署中心 | 拒绝折腾，直接变现</p>
+</div>
+
+</body>
+</html>
